@@ -8,5 +8,6 @@ namespace AirportSimulation
 {
     internal class Gate
     {
+
     }
 }
