@@ -9,25 +9,16 @@ namespace AirportSimulation
 {
     internal class Schedule
     {
-        public Schedule()
+        public Schedule(int NumberOfPlanes)
         {
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < NumberOfPlanes; i++)
                 Airplanes.Add(GenerateAirplane());
         }
 
         public List<Airplane> Airplanes { get; private set; } = new List<Airplane>();
         private string[] AirplaneManufacturers = { "Airbus", "Boeing", "Embraer", "Lockheed Martin", "Bombardier", "Gulfstream Aerospace", "Dassault Aviaton", "Pilatus Aircraft", "Beechcraft" };
 
-        public Airplane AllowIn()
-        {
-            Airplane temp = Airplanes[0];
-            Airplanes.RemoveAt(0);
-
-            Airplanes.Add(GenerateAirplane());
-            return temp;
-        }
-
-        private Airplane GenerateAirplane()
+        public Airplane GenerateAirplane()
         {
             Random rand = new Random();
 

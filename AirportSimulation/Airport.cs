@@ -8,7 +8,7 @@ namespace AirportSimulation
 {
     internal class Airport
     {
-        public Airport(int NumberOfGates)
+        public Airport(int NumberOfGates, Schedule Schedule)
         {
             string[] temp = new string[NumberOfGates + 1];
             for (int i = 0; i < NumberOfGates; i++)
@@ -18,9 +18,11 @@ namespace AirportSimulation
             }
             temp[NumberOfGates + 1] = "Back";
             gatesMenu = temp;
+
+            this.Schedule = Schedule;
         }
 
-        public Schedule Schedule { get; set; } = new Schedule();
+        public Schedule Schedule { get; }
         public List<Gate> Gates { get; set; } = new List<Gate>();
 
 
@@ -28,6 +30,15 @@ namespace AirportSimulation
         private string[] controlTowerMenu = { "Let a plane land", "Let a plane take off", "Back" };
         private string[] gateMenu = {  };
         private string[] gatesMenu;
+
+        public Airplane AllowIn()
+        {
+            Airplane temp = Schedule.Airplanes[0];
+            Schedule.Airplanes.RemoveAt(0);
+
+            Schedule.Airplanes.Add(Schedule.GenerateAirplane());
+            return temp;
+        }
 
         public void AirportMenu()
         {

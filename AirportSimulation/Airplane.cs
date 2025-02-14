@@ -17,9 +17,10 @@ namespace AirportSimulation
         }
 
         public string Manufacturer { get; private set; }
-        public int Fuel { get; private set; }
         public TimeOnly ArrivalTime { get; private set; }
         public TimeOnly Delay { get; set; }
+        public int Fuel { get; private set; }
+        public int MaxFuel { get; } = 60;
 
     }
 }
