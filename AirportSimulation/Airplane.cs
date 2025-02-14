@@ -6,21 +6,12 @@ using System.Threading.Tasks;
 
 namespace AirportSimulation
 {
-    internal class Airplane
+    internal struct Airplane(string Manufacturer, TimeOnly ArrivalTime, TimeOnly Delay, int Fuel)
     {
-        public Airplane(string Manufacturer ,TimeOnly ArrivalTime, TimeOnly Delay, int Fuel)
-        {
-            this.Manufacturer = Manufacturer;
-            this.ArrivalTime = ArrivalTime;
-            this.Delay = Delay;
-            this.Fuel = Fuel;
-        }
-
-        public string Manufacturer { get; private set; }
-        public TimeOnly ArrivalTime { get; private set; }
-        public TimeOnly Delay { get; set; }
-        public int Fuel { get; private set; }
+        public string Manufacturer { get; } = Manufacturer;
+        public TimeOnly ArrivalTime { get; } = ArrivalTime;
+        public TimeOnly Delay { get; set; } = Delay;
+        public int Fuel { get; set; } = Fuel;
         public int MaxFuel { get; } = 60;
-
     }
 }

@@ -25,11 +25,10 @@ namespace AirportSimulation
         public Schedule Schedule { get; }
         public List<Gate> Gates { get; set; } = new List<Gate>();
 
-
-        private string[] airportMenu = { "Continue", "Control Tower", "Gates", "Show schedule", "Exit" };
-        private string[] controlTowerMenu = { "Let a plane land", "Let a plane take off", "Back" };
-        private string[] gateMenu = {  };
+        private readonly string[] airportMenu = ["Continue", "Control Tower", "Gates", "Show schedule", "Exit"];
+        private readonly string[] controlTowerMenu = ["Authorise landing", "Authorise take off", "Back"];
         private string[] gatesMenu;
+        private readonly string[] gateMenu = ["Show plane info", "Allow boarding", "Refuel", "Back"];
 
         public Airplane AllowIn()
         {
@@ -45,21 +44,33 @@ namespace AirportSimulation
             switch (Menu.ChooseMenu(airportMenu))
             {
                 case 0:
-                    ControlTowerMenu();
+                    //TODO
                     break;
                 case 1:
-                    GatesMenu();
+                    ControlTowerMenu();
                     break;
                 case 2:
+                    {
+                        int GateNumber = Menu.ChooseMenu(gatesMenu);
+                        if (GateNumber < Gates.Count && Gates[GateNumber].CurrentPlane != null)
+                        {
+                            Menu.ChooseMenu(gateMenu);
+                        }
+                        else if(GateNumber < Gates.Count && Gates[GateNumber].CurrentPlane == null)
+                        {
+                            throw new Exception("No plane at gate!\nPress any key to continue...");
+                        }
+                        break;
+                    }
+                case 3:
                     Menu.ShowSchedule(Schedule);
                     break;
-                case 3:
+                case 4:
                     Environment.Exit(0);
                     break;
                 default:
                     break;
             }
-
             Console.SetCursorPosition(0, 10);
         }
 
@@ -68,25 +79,13 @@ namespace AirportSimulation
             switch (Menu.ChooseMenu(controlTowerMenu))
             {
                 case 0:
-                    break;
+                    {
+                        int GateNumber = Menu.ChooseMenu(gatesMenu);
+                        if (GateNumber < Gates.Count)
+                            Gates[GateNumber].AirplaneLanding(AllowIn());
+                        break;
+                    }
                 case 1:
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private void GatesMenu()
-        {
-            switch (Menu.ChooseMenu(gatesMenu))
-            {
-                case 0:
-                    break;
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
                     break;
                 default:
                     break;
