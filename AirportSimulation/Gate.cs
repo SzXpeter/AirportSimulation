@@ -1,12 +1,9 @@
-﻿using System.IO.Pipes;
-
-namespace AirportSimulation
+﻿namespace AirportSimulation
 {
     internal class Gate
     {
         public Airplane? CurrentPlane { get; private set; } = null;
         public GateStatus GateStatus { get; set; } = GateStatus.Free;
-        public bool bBoarded { get; private set; } = false;
 
         public void AirplaneLanding(Airplane AirplaneIn)
         {
@@ -20,6 +17,14 @@ namespace AirportSimulation
         { 
             if (GateStatus != GateStatus.Free) throw new Exception(GetGateStatus());
             GateStatus = GateStatus.TakingOff;
+
+            if (CurrentPlane!.Fuel < 50)
+                throw new ArgumentException("The plane did not have enough fuel.");
+            if (!CurrentPlane!.bIsBoarded)
+                throw new ArgumentException("Plane was not boarded!");
+            if (CurrentPlane.DepartureTime.Add(CurrentPlane.Delay.ToTimeSpan()) > Airport.CurrentTime)
+                throw new Exception("Plane took off too early!");
+
             CurrentPlane = null;
         }
 
@@ -36,7 +41,7 @@ namespace AirportSimulation
         {
             if (GateStatus != GateStatus.Free) throw new Exception(GetGateStatus());
             GateStatus = GateStatus.Boarding;
-            bBoarded = true;
+            CurrentPlane!.bIsBoarded = true;
         }
 
         public string GetGateStatus()

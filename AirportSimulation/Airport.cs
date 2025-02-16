@@ -18,6 +18,7 @@
 
         public Schedule Schedule { get; }
         public List<Gate> Gates { get; set; } = new List<Gate>();
+        public int NumberOfStrikes { get; set; } = 0;
         public static TimeOnly CurrentTime { get; set; } = TimeOnly.Parse("00:20:00");
 
         public readonly string[] airportMenu = ["Continue", "Control Tower", "Gates", "Show schedule", "Exit"];

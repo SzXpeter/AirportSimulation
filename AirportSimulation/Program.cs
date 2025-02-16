@@ -5,7 +5,7 @@
         static void Main(string[] args)
         {
             Console.CursorVisible = false;
-            Console.SetWindowSize(150, 40);
+            Console.SetWindowSize(180, 40);
 
             Schedule schedule = new Schedule(20);
             Airport airport = new Airport(10, schedule);
@@ -19,6 +19,19 @@
                     Menu.ClearScreen();
                     Console.WriteLine(e.Message);
                     break;
+                }
+                catch (ArgumentException e)
+                {
+                    Menu.ClearScreen();
+                    Console.Write(e.Message);
+                    airport.NumberOfStrikes++;
+                    Console.WriteLine($" Your current number of strikes: {airport.NumberOfStrikes} of 3");
+                    if (airport.NumberOfStrikes == 3)
+                    {
+                        Console.WriteLine("You have reached the maximum number of strikes! The airport has been shut down!");
+                        break;
+                    }
+                    Console.ReadKey();
                 }
                 catch (Exception e)
                 {
@@ -123,7 +136,13 @@
                     {
                         int GateNumber = Menu.ChooseMenu(airport.gatesMenu);
                         if (GateNumber < airport.Gates.Count && airport.Gates[GateNumber].CurrentPlane != null)
+                        {
+                            if (airport.Gates[GateNumber].GateStatus != GateStatus.Free)
+                                throw new Exception(airport.Gates[GateNumber].GetGateStatus());
+
+                            Menu.PlaneTakeoff(airport.Gates[GateNumber].CurrentPlane!.Fuel >= 50);
                             airport.Gates[GateNumber].AirplaneTakeOff();
+                        }
                         else
                             throw new Exception("No plane at gate!");
                         break;

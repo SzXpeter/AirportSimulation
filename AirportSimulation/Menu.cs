@@ -93,7 +93,7 @@
             Console.WriteLine($"Manufacturer: {airplane.Manufacturer}");
             Console.WriteLine($"Arrival time: {airplane.ArrivalTime.Add(airplane.Delay.ToTimeSpan()):HH:mm}");
             Console.WriteLine($"Departure time: {airplane.DepartureTime.Add(airplane.Delay.ToTimeSpan()):HH:mm}");
-            Console.WriteLine($"Fuel: {airplane.Fuel}");
+            Console.WriteLine($"Fuel: {airplane.Fuel}%");
             Console.WriteLine($"Delay: {airplane.Delay:HH:mm}");
             Console.WriteLine("\n\nPress any key to continue");
             Console.ReadKey(true);
@@ -164,6 +164,8 @@
                     System.Threading.Thread.Sleep(100);
                 }
             }
+
+            Console.ReadKey(true);
         }
 
         private static void DrawRunway()

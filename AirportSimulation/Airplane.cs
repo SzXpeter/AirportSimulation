@@ -1,6 +1,6 @@
 ﻿namespace AirportSimulation
 {
-    internal class Airplane(string Manufacturer, TimeOnly ArrivalTime, TimeOnly Delay, int Fuel, int MaxFuel = 200)
+    internal class Airplane(string Manufacturer, TimeOnly ArrivalTime, TimeOnly Delay, int Fuel, int MaxFuel = 100)
     {
         public string Manufacturer { get; } = Manufacturer;
         public TimeOnly ArrivalTime { get; } = ArrivalTime;
@@ -8,6 +8,7 @@
         public TimeOnly DepartureTime { get; set; } = TimeOnly.Parse("00:00:00");
         public int Fuel { get; set; } = Fuel;
         public int MaxFuel { get; } = MaxFuel;
+        public bool bIsBoarded { get; set; } = false;
 
         public void AddDelay(TimeSpan DelayIn)
         {
