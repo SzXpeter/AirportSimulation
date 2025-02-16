@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AirportSimulation
+﻿namespace AirportSimulation
 {
     internal class Schedule
     {
@@ -29,7 +22,7 @@ namespace AirportSimulation
                 TimeInMinutes = rand.Next(0, 1) * 10;
             TimeOnly time = TimeOnly.Parse($"{Math.Floor(TimeInMinutes / 60.0)}:{TimeInMinutes % 60}:00");
 
-            Airplane airplane = new Airplane(AirplaneManufacturers[rand.Next(0, 9)], time, TimeOnly.Parse("00:00:00"), rand.Next(0, 60));
+            Airplane airplane = new Airplane(AirplaneManufacturers[rand.Next(0, 9)], time, TimeOnly.Parse("00:00:00"), rand.Next(0, 121));
             return airplane;
         }
     }

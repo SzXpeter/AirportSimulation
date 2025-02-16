@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AirportSimulation
+﻿namespace AirportSimulation
 {
     static class Menu
     {
         public static int ChooseMenu(string[] Menus)
         {
+            if (Menus.Length == 0) throw new ApplicationException("No menu items");
             int NumberOfMenus = Menus.Length;
             int CurrentMenu = 0;
+            ClearScreen();
 
             Console.ForegroundColor = ConsoleColor.Black;
             Console.BackgroundColor = ConsoleColor.White;
@@ -21,6 +17,9 @@ namespace AirportSimulation
             {
                 Console.WriteLine(Menus[i]);
             }
+
+            Console.SetCursorPosition(60, 0);
+            Console.Write($"Current time: {Airport.CurrentTime.ToString("HH:mm")}");
 
             ConsoleKey v;
             do
@@ -32,10 +31,14 @@ namespace AirportSimulation
                     case ConsoleKey.UpArrow:
                         if (CurrentMenu > 0)
                             CurrentMenu--;
+                        else
+                            CurrentMenu = NumberOfMenus - 1;
                         break;
                     case ConsoleKey.DownArrow:
                         if (CurrentMenu < NumberOfMenus - 1)
                             CurrentMenu++;
+                        else
+                            CurrentMenu = 0;
                         break;
                     case ConsoleKey.Enter:
                         return CurrentMenu;
@@ -60,7 +63,7 @@ namespace AirportSimulation
 
         public static void ShowSchedule(Schedule schedule)
         {
-            Console.Clear();
+            ClearScreen();
             Console.WriteLine("Incoming Planes\n");
 
             List<Airplane> Airplanes = schedule.Airplanes;
@@ -85,9 +88,21 @@ namespace AirportSimulation
             Console.ReadKey(true);
         }
 
+        public static void ShowAirplaneInfo(Airplane airplane)
+        {
+            ClearScreen();
+            Console.WriteLine($"Manufacturer: {airplane.Manufacturer}");
+            Console.WriteLine($"Arrival time: {airplane.ArrivalTime.Add(airplane.Delay.ToTimeSpan()).ToString("HH:mm")}");
+            Console.WriteLine($"Departure time: {airplane.DepartureTime.ToString("HH:mm")}");
+            Console.WriteLine($"Fuel: {airplane.Fuel}");
+            Console.WriteLine($"Delay: {airplane.Delay.ToString("HH:mm")}");
+            Console.WriteLine("\n\nPress any key to continue");
+            Console.ReadKey(true);
+        }
+
         private static void PlaneTakeoff(bool bIsSuccessful = true)
         {
-            Console.Clear();
+            ClearScreen();
             DrawRunway();
 
             (int left, int top) = (74, 19);
@@ -168,6 +183,14 @@ namespace AirportSimulation
             Console.WriteLine($"{new string(' ', 80)}{new string('█', 50)}");
             Console.WriteLine($"{new string(' ', 80)}{new string('█', 50)}");
             Console.WriteLine($"{new string(' ', 10)}{new string('_', 70)}{new string('█', 50)}");
+        }
+
+        public static void ClearScreen()
+        {
+            Console.SetCursorPosition(0, 0);
+            for (int i = 0; i < 30; i++)
+                Console.WriteLine(new string(' ', 200));
+            Console.SetCursorPosition(0, 0);
         }
     }
 }
