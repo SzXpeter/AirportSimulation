@@ -66,22 +66,21 @@
             ClearScreen();
             Console.WriteLine("Incoming Planes\n");
 
-            List<Airplane> Airplanes = schedule.Airplanes;
-            foreach (var item in Airplanes)
+            foreach (var item in schedule.Airplanes)
                 Console.WriteLine(item.Manufacturer);
 
-            for (int i = 0; i < Airplanes.Count; i++)
+            for (int i = 0; i < schedule.Airplanes.Count; i++)
             {
                 Console.SetCursorPosition(30, i + 2);
-                Console.Write(Airplanes[i].ArrivalTime.Add(Airplanes[i].Delay.ToTimeSpan()).ToString("HH:mm"));
+                Console.Write(schedule.Airplanes[i].ArrivalTime.Add(schedule.Airplanes[i].Delay.ToTimeSpan()).ToString("HH:mm"));
             }
 
             Console.SetCursorPosition(50, 0);
             Console.Write("Delay");
-            for (int i = 0; i < Airplanes.Count; i++)
+            for (int i = 0; i < schedule.Airplanes.Count; i++)
             {
                 Console.SetCursorPosition(50, i + 2);
-                Console.Write(Airplanes[i].Delay.ToString("HH:mm"));
+                Console.Write(schedule.Airplanes[i].Delay.ToString("HH:mm"));
             }
 
             Console.WriteLine("\n\nPress any key to continue");
@@ -92,15 +91,15 @@
         {
             ClearScreen();
             Console.WriteLine($"Manufacturer: {airplane.Manufacturer}");
-            Console.WriteLine($"Arrival time: {airplane.ArrivalTime.Add(airplane.Delay.ToTimeSpan()).ToString("HH:mm")}");
-            Console.WriteLine($"Departure time: {airplane.DepartureTime.ToString("HH:mm")}");
+            Console.WriteLine($"Arrival time: {airplane.ArrivalTime.Add(airplane.Delay.ToTimeSpan()):HH:mm}");
+            Console.WriteLine($"Departure time: {airplane.DepartureTime.Add(airplane.Delay.ToTimeSpan()):HH:mm}");
             Console.WriteLine($"Fuel: {airplane.Fuel}");
-            Console.WriteLine($"Delay: {airplane.Delay.ToString("HH:mm")}");
+            Console.WriteLine($"Delay: {airplane.Delay:HH:mm}");
             Console.WriteLine("\n\nPress any key to continue");
             Console.ReadKey(true);
         }
 
-        private static void PlaneTakeoff(bool bIsSuccessful = true)
+        public static void PlaneTakeoff(bool bIsSuccessful = true)
         {
             ClearScreen();
             DrawRunway();

@@ -9,7 +9,7 @@
         }
 
         public List<Airplane> Airplanes { get; private set; } = new List<Airplane>();
-        private string[] AirplaneManufacturers = { "Airbus", "Boeing", "Embraer", "Lockheed Martin", "Bombardier", "Gulfstream Aerospace", "Dassault Aviaton", "Pilatus Aircraft", "Beechcraft" };
+        private readonly string[] AirplaneManufacturers = { "Airbus", "Boeing", "Embraer", "Lockheed Martin", "Bombardier", "Gulfstream Aerospace", "Dassault Aviaton", "Pilatus Aircraft", "Beechcraft" };
 
         public Airplane GenerateAirplane()
         {

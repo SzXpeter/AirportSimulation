@@ -13,6 +13,7 @@ namespace AirportSimulation
             if (GateStatus != GateStatus.Free) throw new Exception(GetGateStatus());
             GateStatus = GateStatus.Landing;
             CurrentPlane = AirplaneIn;
+            CurrentPlane.DepartureTime = CurrentPlane.ArrivalTime.Add(CurrentPlane.Delay.Add(TimeSpan.Parse("01:00:00")).ToTimeSpan());
         }
 
         public void AirplaneTakeOff()
@@ -26,7 +27,7 @@ namespace AirportSimulation
         {
             if (GateStatus != GateStatus.Free) throw new Exception(GetGateStatus());
             GateStatus = GateStatus.Refueling;
-            Airplane temp = CurrentPlane!.Value;
+            Airplane temp = CurrentPlane!;
             temp.Fuel = temp.MaxFuel;
             CurrentPlane = temp;
         }

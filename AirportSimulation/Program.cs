@@ -9,12 +9,12 @@
 
             Schedule schedule = new Schedule(20);
             Airport airport = new Airport(10, schedule);
-            while (true)
+            while (Airport.CurrentTime != TimeOnly.Parse("00:00:00"))
                 try
                 {
                     AirportMenu(airport);
                 }
-                catch(ApplicationException e)
+                catch (ApplicationException e)
                 {
                     Menu.ClearScreen();
                     Console.WriteLine(e.Message);
@@ -46,6 +46,15 @@
                         {
                             airport.Gates[i].GateStatus = GateStatus.Free;
                         }
+
+                        Random random = new Random();
+                        for (int i = 0; i < airport.Schedule.Airplanes.Count; i++)
+                            if (random.Next(0, 10) == 0 || airport.Schedule.Airplanes[i].ArrivalTime < Airport.CurrentTime)
+                                airport.Schedule.Airplanes[i].AddDelay(TimeSpan.Parse("00:20:00"));
+
+                        for (int i = 0; i < airport.Gates.Count; i++)
+                            if (airport.Gates[i].CurrentPlane != null && airport.Gates[i].CurrentPlane!.DepartureTime < Airport.CurrentTime)
+                                airport.Gates[i].CurrentPlane!.DepartureTime = Airport.CurrentTime;
                         break;
                     }
                 case 1:
@@ -63,7 +72,7 @@
                                 switch (MenuNumber)
                                 {
                                     case 0:
-                                        Menu.ShowAirplaneInfo((Airplane)airport.Gates[GateNumber].CurrentPlane!);
+                                        Menu.ShowAirplaneInfo(airport.Gates[GateNumber].CurrentPlane!);
                                         break;
                                     case 1:
                                         airport.Gates[GateNumber].BoardAirplane();
@@ -74,7 +83,7 @@
                                 }
                             }
                             else
-                                throw new Exception(status + $" Gate-{GateNumber}\n");
+                                throw new Exception(status + $" Gate-{GateNumber + 1}\n");
                         }
                         else if (GateNumber < airport.Gates.Count && airport.Gates[GateNumber].CurrentPlane == null)
                         {
