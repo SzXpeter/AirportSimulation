@@ -40,6 +40,14 @@
                     Console.WriteLine("Press any key to continue...");
                     Console.ReadKey();
                 }
+
+            if (Airport.CurrentTime == TimeOnly.Parse("00:00:00"))
+            {
+                Menu.ClearScreen();
+                Console.WriteLine("You survived the day congratulations");
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
+            }
         }
 
         static void AirportMenu(Airport airport)
@@ -48,13 +56,6 @@
             {
                 case 0:
                     {
-                        TimeOnly temp = Airport.CurrentTime.Add(TimeSpan.Parse("00:20:00"));
-                        if (temp == TimeOnly.Parse("00:00:00"))
-                        {
-                            throw new ApplicationException("Day is over! Congratulations");
-                        }
-                        Airport.CurrentTime = temp;
-
                         for (int i = 0; i < airport.Gates.Count; i++)
                         {
                             airport.Gates[i].GateStatus = GateStatus.Free;
@@ -75,33 +76,56 @@
                     break;
                 case 2:
                     {
-                        int GateNumber = Menu.ChooseMenu(airport.gatesMenu);
-                        if (GateNumber < airport.Gates.Count && airport.Gates[GateNumber].CurrentPlane != null)
+                        int GateNumber;
+                        do
                         {
-                            string status = airport.Gates[GateNumber].GetGateStatus();
-                            if (status == "")
+                            GateNumber = Menu.ChooseMenu(airport.gatesMenu);
+                            try
                             {
-                                int MenuNumber = Menu.ChooseMenu(airport.gateMenu);
-                                switch (MenuNumber)
+                                if (GateNumber < airport.Gates.Count && airport.Gates[GateNumber].CurrentPlane != null && airport.Gates[GateNumber].GetGateStatus() == "")
                                 {
-                                    case 0:
-                                        Menu.ShowAirplaneInfo(airport.Gates[GateNumber].CurrentPlane!);
-                                        break;
-                                    case 1:
-                                        airport.Gates[GateNumber].BoardAirplane();
-                                        break;
-                                    case 2:
-                                        airport.Gates[GateNumber].RefuelAirplane();
-                                        break;
+                                    int MenuNumber = -1;
+                                    do
+                                    {
+                                        try
+                                        {
+                                            MenuNumber = Menu.ChooseMenu(airport.gateMenu);
+                                            switch (MenuNumber)
+                                            {
+                                                case 0:
+                                                    Menu.ShowAirplaneInfo(airport.Gates[GateNumber].CurrentPlane!);
+                                                    break;
+                                                case 1:
+                                                    airport.Gates[GateNumber].BoardAirplane();
+                                                    break;
+                                                case 2:
+                                                    airport.Gates[GateNumber].RefuelAirplane();
+                                                    break;
+                                            }
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Menu.ClearScreen();
+                                            Console.WriteLine(e.Message);
+                                            Console.WriteLine("Press any key to continue...");
+                                            Console.ReadKey();
+                                        }
+                                    } while (MenuNumber != 3);
+
                                 }
+                                else if (GateNumber < airport.Gates.Count && airport.Gates[GateNumber].CurrentPlane == null)
+                                    throw new Exception("No plane at gate!");
+                                else if (GateNumber < airport.Gates.Count && airport.Gates[GateNumber].CurrentPlane != null && airport.Gates[GateNumber].GetGateStatus() != "")
+                                    throw new Exception(airport.Gates[GateNumber].GetGateStatus() + $" Gate-{GateNumber + 1}\n");
                             }
-                            else
-                                throw new Exception(status + $" Gate-{GateNumber + 1}\n");
-                        }
-                        else if (GateNumber < airport.Gates.Count && airport.Gates[GateNumber].CurrentPlane == null)
-                        {
-                            throw new Exception("No plane at gate!");
-                        }
+                            catch (Exception e)
+                            {
+                                Menu.ClearScreen();
+                                Console.WriteLine(e.Message);
+                                Console.WriteLine("Press any key to continue...");
+                                Console.ReadKey();
+                            }
+                        } while (GateNumber != airport.Gates.Count);
                         break;
                     }
                 case 3:
@@ -126,6 +150,9 @@
                             throw new Exception("Plane is not here yet!");
 
                         int GateNumber = Menu.ChooseMenu(airport.gatesMenu);
+                        if (GateNumber == airport.Gates.Count)
+                            break;
+
                         if (GateNumber < airport.Gates.Count && airport.Gates[GateNumber].CurrentPlane == null)
                             airport.Gates[GateNumber].AirplaneLanding(airport.AllowIn());
                         else
