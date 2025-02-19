@@ -17,7 +17,6 @@
             {
                 Console.WriteLine(Menus[i]);
             }
-
             Console.SetCursorPosition(60, 0);
             Console.Write($"Current time: {Airport.CurrentTime.ToString("HH:mm")}");
 
@@ -164,7 +163,6 @@
                     System.Threading.Thread.Sleep(100);
                 }
             }
-
             Console.ReadKey(true);
         }
 
