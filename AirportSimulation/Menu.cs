@@ -4,8 +4,8 @@
     {
         public static int ChooseMenu(string[] Menus)
         {
-            if (Menus.Length == 0) throw new ApplicationException("No menu items");
             int NumberOfMenus = Menus.Length;
+            if (NumberOfMenus == 0) throw new ApplicationException("No menu items");
             int CurrentMenu = 0;
             ClearScreen();
 
@@ -190,7 +190,7 @@
         {
             Console.SetCursorPosition(0, 0);
             for (int i = 0; i < 30; i++)
-                Console.WriteLine(new string(' ', 200));
+                Console.WriteLine(new string(' ', 150));
             Console.SetCursorPosition(0, 0);
         }
     }

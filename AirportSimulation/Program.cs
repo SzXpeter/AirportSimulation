@@ -56,6 +56,8 @@
             {
                 case 0:
                     {
+                        Airport.CurrentTime = Airport.CurrentTime.Add(TimeSpan.Parse("00:20:00"));
+
                         for (int i = 0; i < airport.Gates.Count; i++)
                         {
                             airport.Gates[i].GateStatus = GateStatus.Free;
